@@ -1,24 +1,34 @@
-import psutil, os, time
+import psutil, os, time, traceback, getpass
 
 found = 0
 
-theprogram = 'stan_gfriend.exe'         # put name of program here, must be in same location
+theprogram = 'connecttimer.exe'
 
-while True:
+the_user = getpass.getuser()
 
-    for process in psutil.process_iter():
-        if process.name() == theprogram:
-            found = 1
-            print ('process found')
+try:
+
+    while True:
+
+        for process in psutil.process_iter():
+            if process.name() == theprogram:
+                found = 1
+                print ('process found')
+                
+
+        if found == 0:
+            print ('process not found')
+            filepath = theprogram
+            os.startfile(filepath)
             
+        found = 0
 
-    if found == 0:
-        print ('process not found')
-        filepath = theprogram
-        os.startfile(filepath)
-        
-    found = 0
+        time.sleep(10)
+        print ('sleeping')
+        continue
 
-    time.sleep(5)                       # seconds between refreshes
-    print ('sleeping')
-    continue
+except:
+    os.chdir("C://Users/" + the_user + "/desktop")
+    with open("buddyerror.log", "a") as logfile:
+        traceback.print_exc(file=logfile)
+    raise   
